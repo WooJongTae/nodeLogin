@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
 
 // new 뭐징
 const userSchema = new mongoose.Schema({
@@ -50,6 +51,47 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
+
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  // bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+  //   if (err) {
+  //     return cb(err);
+  //   }
+
+  //   cb(null, isMatch);
+  // });
+
+  bcrypt
+    .compare(plainPassword, this.password)
+    .then((isMatch) => {
+      return cb(null, isMatch);
+    })
+    .catch((err) => {
+      console.log(err);
+      return cb(err);
+    });
+};
+
+userSchema.methods.generateToken = function (cb) {
+  let user = this;
+  let token = jwt.sign(user._id.toHexString(), "secretToken");
+
+  user.token = token;
+  // user.save(function (err, user) {
+  //   if (err) {
+  //     return cb(err);
+  //   }
+  //   cb(null, user);
+  // });
+  user
+    .save()
+    .then(() => {
+      return cb(null, user);
+    })
+    .catch((err) => {
+      return cb(err);
+    });
+};
 
 const User = mongoose.model("User", userSchema);
 
