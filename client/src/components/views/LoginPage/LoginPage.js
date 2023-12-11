@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import React, { useState } from "react";
 import { loginUser } from "../../../_actions/user_action";
 import { Navigate } from "react-router-dom";
+import { connect } from "react-redux";
 
 function LoginPage() {
   const dispatch = useDispatch();
