@@ -6,18 +6,33 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
-import { thunk } from "redux-thunk";
 
 import Reducer from "./_reducers";
-const root = ReactDOM.createRoot(document.getElementById("root"));
+import promiseMiddleware from "redux-promise"; // promise를 사용하기 위한 미들웨어
+import { thunk } from "redux-thunk";
 
-const store = createStore(
-  Reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+const createStoreWithMiddleware = applyMiddleware(
+  promiseMiddleware,
+  thunk
+)(createStore);
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+// const store = createStore(Reducer, composeEnhancers(applyMiddleware(thunk)));
+
+// const store = createStore(
+//   Reducer,
+//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+// );
 
 root.render(
-  <Provider store={store}>
+  <Provider
+    store={createStoreWithMiddleware(
+      Reducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+    )}
+  >
     <BrowserRouter>
       <App />
     </BrowserRouter>

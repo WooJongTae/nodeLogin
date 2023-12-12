@@ -1,13 +1,11 @@
-import { Axios } from "axios";
 import { useDispatch } from "react-redux";
 import React, { useState } from "react";
 import { loginUser } from "../../../_actions/user_action";
-import { Navigate } from "react-router-dom";
-import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
 
@@ -27,16 +25,16 @@ function LoginPage() {
       password: Password,
     };
 
-    dispatch(loginUser(body));
-    // .then((response) => {
-    //   console.log(response.payload);
-    //   if (response.payload.success) {
-    //     alert("회원가입이 완료되었습니다.");
-    //     Navigate("/login");
-    //   } else {
-    //     alert("회원가입 중 오류가 발생했습니다.");
-    //   }
-    // });
+    dispatch(loginUser(body)).then((response) => {
+      console.log(response.payload);
+      if (response.payload.loginSuccess) {
+        alert("회원가입이 완료되었습니다.");
+
+        navigate("/");
+      } else {
+        alert("회원가입 중 오류가 발생했습니다.");
+      }
+    });
   };
 
   return (

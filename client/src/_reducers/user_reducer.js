@@ -1,4 +1,4 @@
-import { LOGIN_USER } from "../_actions/types";
+import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "../_actions/types";
 
 function loginUser(state = {}, action) {
   console.log(action.payload);
@@ -6,10 +6,18 @@ function loginUser(state = {}, action) {
     case LOGIN_USER:
       return {
         ...state,
-        asfas: "asfa",
         loginSuccess: action.payload,
       };
-
+    case REGISTER_USER:
+      return {
+        ...state,
+        register: action.payload,
+      };
+    case AUTH_USER:
+      return {
+        ...state,
+        userData: action.payload,
+      };
     default:
       return state;
   }
