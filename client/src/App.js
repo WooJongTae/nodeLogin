@@ -4,14 +4,16 @@ import LandingPage from "../src/components/views/LandingPage/LandingPage";
 import NavBar from "../src/components/views/NavBar/NavBar";
 import RegisterPage from "../src/components/views/RegisterPage/RegisterPage";
 import LoginPage from "../src/components/views/LoginPage/LoginPage";
-import Auth from "./hoc/Auth";
+import Auths from "./hoc/auth";
+// 왜 임포트랑 파일명이 달라야하지?
+// null은 아무나 true 로그인한 유저만 false는 로그인은 출입불가
 function App() {
   return (
     <Routes>
       <Route path="/" element={<NavBar />}>
-        <Route index element={Auth(LandingPage, false)} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/registerPage" element={Auth(RegisterPage, false)} />
+        <Route index element={Auths(LandingPage, null)} />
+        <Route path="/login" element={Auths(LoginPage, false)} />
+        <Route path="/register" element={Auths(RegisterPage, false)} />
       </Route>
     </Routes>
   );
